@@ -1,13 +1,13 @@
 ---
-name: pr-followup
-description: Verwerk de reviewcomments en falende checks van een bestaande Azure DevOps PR via `/pr-followup <PR id of work item id>`. Fase 1 leest de PR, de comments en de pijplijn en stelt per punt een aanpak voor, en stopt dan voor akkoord. Fase 2 (alleen na akkoord) pusht fixes naar de bestaande PR-branch en levert concepten voor antwoorden als tekst. Alleen gebruiken als de gebruiker expliciet een PR wil opvolgen.
+name: ado-pr-followup
+description: Verwerk de reviewcomments en falende checks van een bestaande Azure DevOps PR via `/ado-pr-followup <PR id of work item id>`. Fase 1 leest de PR, de comments en de pijplijn en stelt per punt een aanpak voor, en stopt dan voor akkoord. Fase 2 (alleen na akkoord) pusht fixes naar de bestaande PR-branch en levert concepten voor antwoorden als tekst. Alleen gebruiken als de gebruiker expliciet een PR wil opvolgen.
 argument-hint: <PR id of work item id>
 disable-model-invocation: true
 ---
 
 <!--
 Gebruik (voor mensen)
-- Start met `/pr-followup <PR id>` of `/pr-followup <work item id>`, bijvoorbeeld `/pr-followup 4321`. Bij een work item ID zoekt de agent de gelinkte actieve PR.
+- Start met `/ado-pr-followup <PR id>` of `/ado-pr-followup <work item id>`, bijvoorbeeld `/ado-pr-followup 4321`. Bij een work item ID zoekt de agent de gelinkte actieve PR.
 - Vereist: de MCP-server `ado` met de domeinen core, work-items, repositories en pipelines (voor buildresultaten en logs).
 - Checkpoint 1: na fase 1 stopt de agent met een lijst van punten (comments en falende checks) met een voorgestelde aanpak. Fase 2 start pas na een expliciet akkoord.
 - De skill schrijft niets naar ADO: geen comments, geen threads gesloten, geen votes, geen state-wijzigingen. Antwoorden krijg je als tekst om zelf te plaatsen.

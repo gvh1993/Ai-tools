@@ -1,14 +1,14 @@
-# Skill: pickup-bugfix
+# Skill: ado-pickup-bugfix
 
-Pakt een Azure DevOps Bug op, met de oorzaak en een reproductietest als uitgangspunt. Het is de bug-variant van [`pickup`](../pickup/README.md) en gebruikt dezelfde checkpoints en veiligheidsregels.
+Pakt een Azure DevOps Bug op, met de oorzaak en een reproductietest als uitgangspunt. Het is de bug-variant van [`ado-pickup`](../ado-pickup/README.md) en gebruikt dezelfde checkpoints en veiligheidsregels.
 
 ```
-/pickup-bugfix 12345
+/ado-pickup-bugfix 12345
 ```
 
 ## Verschil met pickup
 
-| | `pickup` | `pickup-bugfix` |
+| | `ado-pickup` | `ado-pickup-bugfix` |
 | --- | --- | --- |
 | Fase 1 | Vereisten, vragen, plan | Oorzaak-hypothese met bewijs (`git blame`/`log`), vragen over repro en impact, plan |
 | Begin van fase 2 | Slices implementeren | **Eerst een falende test** die de bug reproduceert, bevestigd om de goede reden |
@@ -27,7 +27,7 @@ Kan de agent de bug niet reproduceren, dan stopt hij en vraagt om meer informati
 
 ## Vereisten
 
-Zelfde als bij `pickup`: de MCP-server `ado` met de domeinen `core`, `work-items` en `repositories`, een .NET-solution en bij voorkeur `.github/copilot-instructions.md` en `docs/definition-of-done.md`. Vul dezelfde plaatshouders in (`<ado-project>`, `<solution>`, `<excluded-category>`) en controleer de toolnamen tegen jouw MCP-versie.
+Zelfde als bij `ado-pickup`: de MCP-server `ado` met de domeinen `core`, `work-items` en `repositories`, een .NET-solution en bij voorkeur `.github/copilot-instructions.md` en `docs/definition-of-done.md`. Vul dezelfde plaatshouders in (`<ado-project>`, `<solution>`, `<excluded-category>`) en controleer de toolnamen tegen jouw MCP-versie.
 
 ## Tips
 

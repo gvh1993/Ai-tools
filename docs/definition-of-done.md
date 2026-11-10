@@ -1,6 +1,6 @@
 # Definition of Done
 
-Checklist voor de skills `/pickup`, `/pickup-bugfix` en `/pr-followup` ([.github/skills](../.github/skills)). Alleen punten die uit de repo volgen zijn ingevuld; de rest is `TODO: aanvullen door team`. Pas deze lijst aan op jouw team en repo.
+Checklist voor de skills `/ado-pickup`, `/ado-pickup-bugfix` en `/ado-pr-followup` ([.github/skills](../.github/skills)). Alleen punten die uit de repo volgen zijn ingevuld; de rest is `TODO: aanvullen door team`. Pas deze lijst aan op jouw team en repo.
 
 ## Afgeleid uit de repo
 

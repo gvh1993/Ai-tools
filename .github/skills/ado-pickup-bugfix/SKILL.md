@@ -1,15 +1,15 @@
 ---
-name: pickup-bugfix
-description: Pak een of meer Azure DevOps Bugs op via `/pickup-bugfix <work item id> [<work item id> ...]`. Fase 1 zoekt de oorzaak, stelt open vragen en schrijft een plan, en stopt dan voor akkoord. Fase 2 (alleen na akkoord) schrijft eerst een falende test die de bug reproduceert, doet dan de minimale fix op een bugfix branch en bereidt de PR voor. Alleen gebruiken als de gebruiker expliciet een Bug wil oppakken.
+name: ado-pickup-bugfix
+description: Pak een of meer Azure DevOps Bugs op via `/ado-pickup-bugfix <work item id> [<work item id> ...]`. Fase 1 zoekt de oorzaak, stelt open vragen en schrijft een plan, en stopt dan voor akkoord. Fase 2 (alleen na akkoord) schrijft eerst een falende test die de bug reproduceert, doet dan de minimale fix op een bugfix branch en bereidt de PR voor. Alleen gebruiken als de gebruiker expliciet een Bug wil oppakken.
 argument-hint: <work item id> [<work item id> ...]
 disable-model-invocation: true
 ---
 
 <!--
 Gebruik (voor mensen)
-- Start met `/pickup-bugfix <work item id>` in Copilot Chat of Claude Code, bijvoorbeeld `/pickup-bugfix 12345`.
+- Start met `/ado-pickup-bugfix <work item id>` in Copilot Chat of Claude Code, bijvoorbeeld `/ado-pickup-bugfix 12345`.
 - Vereist: de MCP-server `ado` met de domeinen core, work-items en repositories (zie de README van deze skill).
-- Verschil met `/pickup`: de oorzaak wordt eerst onderzocht, de bug wordt eerst gereproduceerd met een falende test, en de fix is bewust minimaal.
+- Verschil met `/ado-pickup`: de oorzaak wordt eerst onderzocht, de bug wordt eerst gereproduceerd met een falende test, en de fix is bewust minimaal.
 - Checkpoint 1: na fase 1 stopt de agent met oorzaak-hypothese, open vragen en plan. Fase 2 start pas na een expliciet akkoord.
 - Checkpoint 2: aan het eind krijg je diff-review en een PR-beschrijving als tekst. De PR wordt alleen aangemaakt als je daarom vraagt.
 - Niet geautomatiseerd: pushen naar master, PR's mergen, backports naar release-branches, work item sluiten, review door een collega, deployen.
@@ -18,9 +18,9 @@ Gebruik (voor mensen)
 
 # Pickup-bugfix: bugs oppakken
 
-De work item-ID's zijn de getallen die na `/pickup-bugfix` zijn meegegeven (gescheiden door een spatie of komma). Ontbreekt er een, vraag ernaar en doe niets anders.
+De work item-ID's zijn de getallen die na `/ado-pickup-bugfix` zijn meegegeven (gescheiden door een spatie of komma). Ontbreekt er een, vraag ernaar en doe niets anders.
 Het eerste ID is het hoofd-ID (voor de branchnaam). Meerdere ID's alleen als het dezelfde oorzaak betreft; zijn het verschillende oorzaken, meld dat in fase 1 en adviseer ze apart op te pakken.
-Is een item geen Bug, meld dat en stop: daarvoor is `/pickup` bedoeld.
+Is een item geen Bug, meld dat en stop: daarvoor is `/ado-pickup` bedoeld.
 Het ADO-project is `<ado-project>`. De organisatie komt uit de MCP-configuratie.
 Code en identifiers blijven Engels, overleg en documentatie Nederlands.
 

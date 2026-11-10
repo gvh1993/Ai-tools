@@ -32,6 +32,6 @@ Loop het resultaat na met deze vragen:
 - Staan de valkuilen erin die je collega's je ook zouden vertellen?
 - Staat er niets in dat veroudert zonder dat iemand het merkt (aantallen, versies, namen van mensen)?
 - Zijn er geen geheimen, persoonsgegevens of klantnamen opgenomen?
-- Is alles wat de skills (`pickup` e.a.) nodig hebben ingevuld: structuur, commando's, testafspraken en valkuilen?
+- Is alles wat de skills (`ado-pickup` e.a.) nodig hebben ingevuld: structuur, commando's, testafspraken en valkuilen?
 
 Behandel het bestand als code: wijzig het in een PR en pas het aan zodra een agent twee keer dezelfde fout maakt.

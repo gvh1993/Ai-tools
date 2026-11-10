@@ -1,10 +1,10 @@
-# Skill: pickup
+# Skill: ado-pickup
 
 Pakt een of meer Azure DevOps work items op, van analyse tot PR-voorbereiding, met twee vaste checkpoints waar de mens beslist.
 
 ```
-/pickup 12345
-/pickup 12345 12346     # samenhangende items: één plan, één branch, één PR
+/ado-pickup 12345
+/ado-pickup 12345 12346     # samenhangende items: één plan, één branch, één PR
 ```
 
 ## Werkwijze

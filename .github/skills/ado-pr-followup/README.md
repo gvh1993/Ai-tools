@@ -1,10 +1,10 @@
-# Skill: pr-followup
+# Skill: ado-pr-followup
 
-Verwerkt reviewfeedback en falende checks van een bestaande PR. Het is het vervolg op [`pickup`](../pickup/README.md) en [`pickup-bugfix`](../pickup-bugfix/README.md), die stoppen zodra de PR er staat.
+Verwerkt reviewfeedback en falende checks van een bestaande PR. Het is het vervolg op [`ado-pickup`](../ado-pickup/README.md) en [`ado-pickup-bugfix`](../ado-pickup-bugfix/README.md), die stoppen zodra de PR er staat.
 
 ```
-/pr-followup 4321       # PR-ID
-/pr-followup 12345      # work item-ID, de skill zoekt de gelinkte PR
+/ado-pr-followup 4321       # PR-ID
+/ado-pr-followup 12345      # work item-ID, de skill zoekt de gelinkte PR
 ```
 
 ## Werkwijze
