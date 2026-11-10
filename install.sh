@@ -18,10 +18,14 @@ Opties:
   --target <copilot|claude|both>  Waar de skills komen: .github/skills, .claude/skills of beide (standaard: both)
   --templates                     Maak ook ontbrekende bestanden aan: .github/copilot-instructions.md,
                                   CLAUDE.md en .vscode/mcp.json
-  --force                         Overschrijf bestaande bestanden en mappen
+  --hooks                         Installeer de Claude Code hooks in .claude/hooks en maak, als dat nog niet
+                                  bestaat, .claude/settings.json aan
+  --force                         Overschrijf bestaande skills en hooks (bijv. om een nieuwe versie te halen)
   -h, --help                      Toon deze hulp
 
-Bestaande bestanden worden standaard niet overschreven. Er wordt niets gecommit.
+Bestanden die van jou zijn worden nooit overschreven, ook niet met --force: docs/definition-of-done.md,
+.github/copilot-instructions.md, CLAUDE.md, .vscode/mcp.json en .claude/settings.json.
+Er wordt niets gecommit.
 EOF
 }
 
@@ -31,6 +35,7 @@ SOLUTION=""
 EXCLUDED_CATEGORY=""
 TARGET="both"
 WITH_TEMPLATES=0
+WITH_HOOKS=0
 FORCE=0
 
 need_value() {
@@ -47,6 +52,7 @@ while [[ $# -gt 0 ]]; do
     --excluded-category) need_value "$@"; EXCLUDED_CATEGORY="$2"; shift 2 ;;
     --target) need_value "$@"; TARGET="$2"; shift 2 ;;
     --templates) WITH_TEMPLATES=1; shift ;;
+    --hooks) WITH_HOOKS=1; shift ;;
     --force) FORCE=1; shift ;;
     -h|--help) usage; exit 0 ;;
     -*) echo "Fout: onbekende optie $1" >&2; usage >&2; exit 2 ;;
@@ -119,9 +125,10 @@ copy_dir() {
   INSTALLED+=("$dst")
 }
 
+# copy_file <bron> <doel> [keep]: met 'keep' wordt een bestaand bestand nooit overschreven (ook niet met --force).
 copy_file() {
-  local src="$1" dst="$2"
-  if [[ -e "$dst" && $FORCE -eq 0 ]]; then
+  local src="$1" dst="$2" keep="${3:-}"
+  if [[ -e "$dst" && ( $FORCE -eq 0 || -n "$keep" ) ]]; then
     SKIPPED+=("$dst")
     return 1
   fi
@@ -162,17 +169,34 @@ if [[ $found -eq 0 ]]; then
 fi
 
 # Definition of Done
-if copy_file "$SCRIPT_DIR/docs/definition-of-done.md" "$TARGET_REPO/docs/definition-of-done.md"; then
+if copy_file "$SCRIPT_DIR/docs/definition-of-done.md" "$TARGET_REPO/docs/definition-of-done.md" keep; then
   fill_placeholders "$TARGET_REPO/docs/definition-of-done.md"
 fi
 
 # Sjablonen
 if [[ $WITH_TEMPLATES -eq 1 ]]; then
-  if copy_file "$SCRIPT_DIR/templates/copilot-instructions.md" "$TARGET_REPO/.github/copilot-instructions.md"; then
+  if copy_file "$SCRIPT_DIR/templates/copilot-instructions.md" "$TARGET_REPO/.github/copilot-instructions.md" keep; then
     fill_placeholders "$TARGET_REPO/.github/copilot-instructions.md"
   fi
-  copy_file "$SCRIPT_DIR/templates/CLAUDE.md" "$TARGET_REPO/CLAUDE.md" || true
-  copy_file "$SCRIPT_DIR/templates/vscode-mcp.json" "$TARGET_REPO/.vscode/mcp.json" || true
+  copy_file "$SCRIPT_DIR/templates/CLAUDE.md" "$TARGET_REPO/CLAUDE.md" keep || true
+  copy_file "$SCRIPT_DIR/templates/vscode-mcp.json" "$TARGET_REPO/.vscode/mcp.json" keep || true
+fi
+
+# Hooks (Claude Code)
+SETTINGS_EXISTS=0
+if [[ $WITH_HOOKS -eq 1 ]]; then
+  for h in "$SCRIPT_DIR"/hooks/*.sh; do
+    [[ -f "$h" ]] || continue
+    if copy_file "$h" "$TARGET_REPO/.claude/hooks/$(basename "$h")"; then
+      chmod +x "$TARGET_REPO/.claude/hooks/$(basename "$h")"
+    fi
+  done
+  if [[ -e "$TARGET_REPO/.claude/settings.json" ]]; then
+    SETTINGS_EXISTS=1
+    SKIPPED+=("$TARGET_REPO/.claude/settings.json")
+  else
+    copy_file "$SCRIPT_DIR/templates/claude-settings.json" "$TARGET_REPO/.claude/settings.json" keep || true
+  fi
 fi
 
 echo "Geïnstalleerd in $TARGET_REPO:"
@@ -182,7 +206,7 @@ else
   echo "  (niets nieuw)"
 fi
 if [[ ${#SKIPPED[@]} -gt 0 ]]; then
-  echo "Overgeslagen omdat ze al bestaan (gebruik --force om te overschrijven):"
+  echo "Overgeslagen omdat ze al bestaan (skills en hooks overschrijf je met --force; de rest nooit):"
   for p in "${SKIPPED[@]}"; do echo "  = ${p#"$TARGET_REPO"/}"; done
 fi
 
@@ -203,6 +227,11 @@ if [[ -n "$remaining" ]]; then
   echo "Nog niet ingevuld: ${names}"
   echo "Gebruik de opties --ado-project, --solution en --excluded-category (met --force), of vul ze met de hand in. Aanwezig in:"
   while IFS= read -r f; do echo "  ${f#"$TARGET_REPO"/}"; done <<< "$remaining"
+fi
+
+if [[ $SETTINGS_EXISTS -eq 1 ]]; then
+  echo
+  echo "Let op: .claude/settings.json bestaat al en is niet aangepast. Voeg het blok \"hooks\" uit templates/claude-settings.json zelf toe."
 fi
 
 cat <<'EOF'

@@ -25,7 +25,11 @@ param(
     # Maak ook ontbrekende bestanden aan: .github/copilot-instructions.md, CLAUDE.md en .vscode/mcp.json
     [switch]$Templates,
 
-    # Overschrijf bestaande bestanden en mappen
+    # Installeer de Claude Code hooks in .claude/hooks en maak, als dat nog niet bestaat, .claude/settings.json aan
+    [switch]$Hooks,
+
+    # Overschrijf bestaande skills en hooks. Bestanden die van jou zijn (definition-of-done.md, copilot-instructions.md,
+    # CLAUDE.md, .vscode/mcp.json en .claude/settings.json) worden nooit overschreven.
     [switch]$Force
 )
 
@@ -93,8 +97,8 @@ function Copy-Directory([string]$Source, [string]$Destination) {
     return $true
 }
 
-function Copy-OneFile([string]$Source, [string]$Destination) {
-    if ((Test-Path -LiteralPath $Destination) -and -not $Force) {
+function Copy-OneFile([string]$Source, [string]$Destination, [switch]$Keep) {
+    if ((Test-Path -LiteralPath $Destination) -and ((-not $Force) -or $Keep)) {
         $Skipped.Add($Destination)
         return $false
     }
@@ -140,18 +144,34 @@ foreach ($skill in $skillDirs) {
 
 # Definition of Done
 $dodTarget = Join-Path $TargetRepo 'docs/definition-of-done.md'
-if (Copy-OneFile (Join-Path $SourceRoot 'docs/definition-of-done.md') $dodTarget) {
+if (Copy-OneFile (Join-Path $SourceRoot 'docs/definition-of-done.md') $dodTarget -Keep) {
     Set-Placeholders $dodTarget
 }
 
 # Sjablonen
 if ($Templates) {
     $instrTarget = Join-Path $TargetRepo '.github/copilot-instructions.md'
-    if (Copy-OneFile (Join-Path $SourceRoot 'templates/copilot-instructions.md') $instrTarget) {
+    if (Copy-OneFile (Join-Path $SourceRoot 'templates/copilot-instructions.md') $instrTarget -Keep) {
         Set-Placeholders $instrTarget
     }
-    [void](Copy-OneFile (Join-Path $SourceRoot 'templates/CLAUDE.md') (Join-Path $TargetRepo 'CLAUDE.md'))
-    [void](Copy-OneFile (Join-Path $SourceRoot 'templates/vscode-mcp.json') (Join-Path $TargetRepo '.vscode/mcp.json'))
+    [void](Copy-OneFile (Join-Path $SourceRoot 'templates/CLAUDE.md') (Join-Path $TargetRepo 'CLAUDE.md') -Keep)
+    [void](Copy-OneFile (Join-Path $SourceRoot 'templates/vscode-mcp.json') (Join-Path $TargetRepo '.vscode/mcp.json') -Keep)
+}
+
+# Hooks (Claude Code; de scripts zijn bash en hebben bash nodig, bijvoorbeeld Git Bash of WSL)
+$settingsExists = $false
+if ($Hooks) {
+    foreach ($h in Get-ChildItem -LiteralPath (Join-Path $SourceRoot 'hooks') -File -Filter '*.sh') {
+        [void](Copy-OneFile $h.FullName (Join-Path $TargetRepo ".claude/hooks/$($h.Name)"))
+    }
+    $settingsTarget = Join-Path $TargetRepo '.claude/settings.json'
+    if (Test-Path -LiteralPath $settingsTarget) {
+        $settingsExists = $true
+        $Skipped.Add($settingsTarget)
+    }
+    else {
+        [void](Copy-OneFile (Join-Path $SourceRoot 'templates/claude-settings.json') $settingsTarget -Keep)
+    }
 }
 
 function Get-Relative([string]$Path) {
@@ -166,7 +186,7 @@ else {
     Write-Host '  (niets nieuw)'
 }
 if ($Skipped.Count -gt 0) {
-    Write-Host 'Overgeslagen omdat ze al bestaan (gebruik -Force om te overschrijven):'
+    Write-Host 'Overgeslagen omdat ze al bestaan (skills en hooks overschrijf je met -Force; de rest nooit):'
     foreach ($p in $Skipped) { Write-Host "  = $(Get-Relative $p)" }
 }
 
@@ -190,6 +210,11 @@ if ($open.Count -gt 0) {
     Write-Host "Nog niet ingevuld: $(($names | Sort-Object) -join ' ')"
     Write-Host 'Gebruik de parameters -AdoProject, -Solution en -ExcludedCategory (met -Force), of vul ze met de hand in. Aanwezig in:'
     foreach ($f in ($open | Sort-Object -Unique)) { Write-Host "  $(Get-Relative $f)" }
+}
+
+if ($settingsExists) {
+    Write-Host ''
+    Write-Host 'Let op: .claude/settings.json bestaat al en is niet aangepast. Voeg het blok "hooks" uit templates/claude-settings.json zelf toe.'
 }
 
 Write-Host ''

@@ -69,7 +69,8 @@ dotnet format <solution>.slnx --verify-no-changes --no-restore --include <bestan
 - Branches: `feature/<id>` en `bugfix/<id>` vanaf `master`. Nooit rechtstreeks op `master`.
 - Commitberichten: `<type>: <omschrijving> (#<id>)` met type `feat`, `fix`, `test` of `refactor`.
 - PR's naar `master`, met `Related work items: #<id>` onderaan de beschrijving.
-- Werk items via `/ado-pickup` (taken en stories), `/ado-pickup-bugfix` (bugs) en `/ado-pr-followup` (reviewfeedback).
+- Werk items via `/ado-refine` (verfijnen), `/ado-pickup` (taken en stories), `/ado-pickup-bugfix` (bugs), `/ado-review` (PR beoordelen) en `/ado-pr-followup` (reviewfeedback).
+- Migraties: `/characterize-migrate`. Beslissingen vastleggen: `/adr`.
 
 ## Niet doen
 
