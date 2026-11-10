@@ -1,6 +1,6 @@
 # Definition of Done
 
-Checklist voor `/pickup` ([.github/skills/pickup/SKILL.md](../.github/skills/pickup/SKILL.md)). Alleen punten die uit de repo volgen zijn ingevuld; de rest is `TODO: aanvullen door team`. Pas deze lijst aan op jouw team en repo.
+Checklist voor de skills `/pickup`, `/pickup-bugfix` en `/pr-followup` ([.github/skills](../.github/skills)). Alleen punten die uit de repo volgen zijn ingevuld; de rest is `TODO: aanvullen door team`. Pas deze lijst aan op jouw team en repo.
 
 ## Afgeleid uit de repo
 
@@ -24,6 +24,11 @@ Checklist voor `/pickup` ([.github/skills/pickup/SKILL.md](../.github/skills/pic
 - [ ] Wijziging aan entities of `DbContext`: EF Core-migratie aanwezig in het project van die `DbContext`.
 - [ ] Nieuwe of gewijzigde route in de WebApi: ook geregistreerd in de API-gateway-definitie van de repo (`externalAvailable` bewust gekozen).
 - [ ] Route-namen (`Name = nameof(...)`) zijn applicatiebreed uniek (conflict blijkt pas bij het starten van de app of in tests).
+
+### Bugfixes
+- [ ] Er is een regressietest die vóór de fix faalde (om de goede reden) en erna slaagt.
+- [ ] De fix lost de oorzaak op, niet alleen het symptoom, en blijft binnen de scope.
+- [ ] Vergelijkbare plekken en een eventuele backport naar een release-branch zijn gemeld.
 
 ### Pull request
 - [ ] Doelbranch is `master`; de branch heet `feature/<id>` of `bugfix/<id>`.

@@ -21,6 +21,7 @@ Gebruik (voor mensen)
 
 De work item-ID's zijn de getallen die na `/pickup` zijn meegegeven (gescheiden door een spatie of komma). Ontbreekt er een, vraag ernaar en doe niets anders.
 Bij meerdere ID's werk je alle items samen af op één branch en in één PR; het eerste ID is het hoofd-ID (voor de branchnaam). Zijn de items niet samenhangend (verschillende onderdelen of parents), meld dat dan in fase 1 en adviseer ze apart op te pakken.
+Is het hoofd-item een Bug? Meld dat de skill `/pickup-bugfix` daarvoor bedoeld is (reproduceren met een falende test vóór de fix) en ga alleen verder met `/pickup` als de gebruiker dat uitdrukkelijk wil.
 Het ADO-project is `<ado-project>`. De organisatie komt uit de MCP-configuratie.
 Code en identifiers blijven Engels, overleg en documentatie Nederlands.
 
@@ -50,7 +51,8 @@ In fase 1 wijzig je geen bestanden, maak je geen branch en schrijf je niets naar
 
    Maak onderscheid tussen **vragen voor de PO/het team** (gedrag, scope, acceptatie) en **vragen die de gebruiker zelf kan beantwoorden** (technische keuzes). Stel per vraag een voorgestelde aanname voor.
 4. **Implementatieplan**: stappen in kleine, afzonderlijk te committen slices. Benoem per slice de verwachte bestanden, het work item (of de work items) waar de slice bij hoort, de tests die je toevoegt (test-first waar zinvol) en risico's. Noem ook de voorgestelde branchnaam (zie Fase 2) en welke punten uit de [Definition of Done](../../../docs/definition-of-done.md) van toepassing zijn.
-5. **STOP.** Presenteer de open vragen en het plan en wacht expliciet op goedkeuring. Ga niet door naar fase 2 zonder die goedkeuring. Een antwoord op een vraag of "ok" op een deel van het plan is geen akkoord voor fase 2.
+5. **Groottecheck**: is het plan groot, ruwweg meer dan 6 slices, meer dan 3 projecten of lagen, of meerdere losse functionele deelgebieden? Adviseer dan het item te splitsen, stel een concrete splitsing voor (wat blijft in dit item, wat wordt een nieuw item) en laat de gebruiker kiezen. Maak zelf geen work items aan.
+6. **STOP.** Presenteer de open vragen en het plan en wacht expliciet op goedkeuring. Ga niet door naar fase 2 zonder die goedkeuring. Een antwoord op een vraag of "ok" op een deel van het plan is geen akkoord voor fase 2.
 
 ### Format van het checkpoint
 
@@ -60,8 +62,9 @@ Presenteer in deze volgorde, zodat het snel te beoordelen is:
 2. **Open vragen**: twee lijstjes, *voor PO/team* en *voor jou*, elke vraag met een voorgestelde aanname. Zijn er geen open vragen, zeg dat dan expliciet.
 3. **Afhankelijkheden en overlap**: tussen items, teams, services en migraties.
 4. **Slices**: een tabel met nummer, omschrijving, verwachte bestanden, work item(s) en tests.
-5. **Branch en Definition of Done**: voorgestelde branchnaam en de toepasselijke DoD-punten.
-6. **Risico's**.
+5. **Groottecheck**: past het in één PR? Zo niet, het voorstel voor splitsing.
+6. **Branch en Definition of Done**: voorgestelde branchnaam en de toepasselijke DoD-punten.
+7. **Risico's**.
 
 ## Fase 2: implementatie (alleen na expliciet akkoord)
 
