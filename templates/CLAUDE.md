@@ -16,7 +16,7 @@ Hier komt alleen wat specifiek is voor Claude Code. Houd dit bestand kort.
 
 ## Skills
 
-De skills `ado-pickup`, `ado-pickup-bugfix` en `ado-pr-followup` staan in `.claude/skills/` (Claude Code) en/of `.github/skills/` (Copilot). Gebruik ze alleen als de gebruiker ze expliciet aanroept.
+De skills (`ado-pickup`, `ado-pickup-bugfix`, `ado-pr-followup`, `ado-review`, `ado-refine`, `characterize-migrate` en `adr`) staan in `.claude/skills/` (Claude Code) en/of `.github/skills/` (Copilot). Gebruik ze alleen als de gebruiker ze expliciet aanroept.
 
 ## Persoonlijke voorkeuren
 

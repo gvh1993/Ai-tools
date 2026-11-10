@@ -8,6 +8,7 @@ Sjablonen voor de instructiebestanden die agents in een repo lezen.
 | [`CLAUDE.md`](CLAUDE.md) | Kopieer naar de root van de doelrepo. Importeert de instructies hierboven en voegt Claude Code-specifieke afspraken toe. |
 
 | [`vscode-mcp.json`](vscode-mcp.json) | Kopieer naar `.vscode/mcp.json` in de doelrepo. Start de Azure DevOps MCP-server `ado` (lokaal, via `npx`) met alleen de domeinen die de `ado-`skills nodig hebben. VS Code vraagt bij de start om de organisatienaam. |
+| [`claude-settings.json`](claude-settings.json) | Kopieer naar `.claude/settings.json` in de doelrepo. Registreert de Claude Code hooks uit [`hooks`](../hooks/README.md). Heb je al een `settings.json`, voeg dan alleen het `hooks`-blok toe. |
 
 Zo onderhoud je de inhoud op één plek, voor zowel Copilot als Claude Code.
 
@@ -20,6 +21,20 @@ De `ado-`skills hebben de MCP-server `ado` nodig. De naam `ado` moet kloppen, wa
 - **`ado-pr-followup`** leest ook buildresultaten en heeft daarvoor het domein voor pipelines nodig. Voeg het toe aan de `-d`-lijst; controleer de exacte domeinnaam in de README van [microsoft/azure-devops-mcp](https://github.com/microsoft/azure-devops-mcp), want de lijst met domeinen kan veranderen. Zonder dat domein slaat de skill de checks over.
 - Microsoft biedt ook een gehoste (remote) variant aan, waarvoor je niets lokaal installeert. Daar kies je domeinen niet via `-d`, dus controleer in de documentatie van de server of de tools die de skills gebruiken beschikbaar zijn.
 - Kijk dat de toolnamen die de skills noemen (`wit_work_item`, `repo_pull_request_write`, ...) overeenkomen met wat jouw versie van de server aanbiedt.
+
+## Optioneel: Microsoft Learn-MCP
+
+Microsoft Learn heeft een gehoste MCP-server waarmee een agent actuele Microsoft-documentatie kan opzoeken in plaats van uit het geheugen te antwoorden. Handig voor Azure-werk en bij het studeren voor een Azure-examen. Het is publieke documentatie, er is geen login of sleutel nodig.
+
+- **VS Code / Copilot:** voeg dit toe aan `servers` in `.vscode/mcp.json` (of aan je gebruikersconfiguratie):
+
+  ```json
+  "microsoft-docs": { "type": "http", "url": "https://learn.microsoft.com/api/mcp" }
+  ```
+
+- **Claude Code:** `claude mcp add --transport http microsoft-docs https://learn.microsoft.com/api/mcp`
+
+Controleer de URL en de syntax in de documentatie van Microsoft en van je tool, want beide kunnen veranderen. Zet dit niet in een gedeelde teamconfiguratie zonder het met het team af te stemmen.
 
 ## Invullen
 
