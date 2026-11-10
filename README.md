@@ -2,6 +2,42 @@
 
 Verzameling van eigen skills, instructies en hulpmiddelen voor AI-ondersteunde ontwikkeling (GitHub Copilot agent mode, Claude Code). Alles is generiek gehouden en bevat plaatshouders (`<zo-iets>`) die je per repo invult.
 
+## Aan de slag
+
+Installeer de skills in de repo waar je ze wilt gebruiken (de doelrepo). Het script kopieert ze, vult de plaatshouders in en commit niets.
+
+```bash
+git clone https://github.com/gvh1993/Ai-tools
+cd Ai-tools
+
+# macOS, Linux, WSL, Git Bash
+./install.sh ../mijn-repo --ado-project "Mijn Project" --solution "Acme.Shop" --excluded-category "Slow" --templates
+```
+
+```powershell
+# Windows PowerShell (nog niet op Windows getest)
+.\install.ps1 ..\mijn-repo -AdoProject "Mijn Project" -Solution "Acme.Shop" -ExcludedCategory "Slow" -Templates
+```
+
+| Optie | Betekenis |
+| --- | --- |
+| `--ado-project` / `-AdoProject` | Naam van het Azure DevOps-project |
+| `--solution` / `-Solution` | Naam van de solution, zonder `.slnx` |
+| `--excluded-category` / `-ExcludedCategory` | Testcategorie die de PR-pipeline uitsluit |
+| `--target` / `-Target` | `copilot` (`.github/skills`), `claude` (`.claude/skills`) of `both` (standaard) |
+| `--templates` / `-Templates` | Maak ook ontbrekende `.github/copilot-instructions.md`, `CLAUDE.md` en `.vscode/mcp.json` aan |
+| `--force` / `-Force` | Overschrijf bestaande bestanden (zonder dit worden ze overgeslagen) |
+
+Daarna:
+
+1. **Loop de wijzigingen na** in de doelrepo (`git status`, `git diff`) en commit ze.
+2. **Vul `.github/copilot-instructions.md` in.** De skills leunen hierop. Zie [`templates`](templates/README.md) voor een prompt waarmee een agent de eerste versie uit je code maakt.
+3. **Start de MCP-server `ado`** (voorbeeld: [`templates/vscode-mcp.json`](templates/vscode-mcp.json)) en controleer dat de toolnamen die de skills noemen bij jouw versie passen.
+4. **Doe een proefrun** op een klein, laag-risico item: `/ado-pickup 12345`. Pas de skill aan op wat er misgaat.
+5. **Vul `docs/definition-of-done.md` aan** met de punten uit de `TODO`-lijst.
+
+Mist het script iets of draai je liever niets? Zie [Handmatig installeren](#handmatig-installeren).
+
 ## Inhoud
 
 | Onderdeel | Wat het doet |
@@ -27,7 +63,10 @@ docs/
 templates/
   copilot-instructions.md
   CLAUDE.md
+  vscode-mcp.json
   README.md
+install.sh          Installatiescript voor macOS, Linux, WSL, Git Bash
+install.ps1         Installatiescript voor Windows PowerShell
 ```
 
 Skills staan per map: `<skills-map>/<naam>/SKILL.md`, met bij voorkeur een eigen `README.md`.
@@ -43,7 +82,7 @@ Skills heten `<systeem>-<skill>`, naar het systeem waarvan ze de tools gebruiken
 
 Gebruik je beide tools, zet de skills dan in beide mappen, bijvoorbeeld met een symlink of een kopieerstap. Controleer in de documentatie van je tool of dit nog klopt, want deze mappen kunnen veranderen.
 
-## Een skill gebruiken in je eigen repo
+## Handmatig installeren
 
 1. Kopieer de map van de skill naar de skills-map van je tool in de doelrepo (zie hierboven), en de documenten waar de skill naar verwijst (bij de skills hier: `docs/definition-of-done.md` en `.github/copilot-instructions.md`, zie `templates/`).
 2. Vul de plaatshouders in (zie de README van de skill).

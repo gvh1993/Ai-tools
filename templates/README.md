@@ -7,7 +7,19 @@ Sjablonen voor de instructiebestanden die agents in een repo lezen.
 | [`copilot-instructions.md`](copilot-instructions.md) | Kopieer naar `.github/copilot-instructions.md` in de doelrepo. Bevat de afspraken voor jouw codebase. De skills in deze repo verwijzen hiernaar. |
 | [`CLAUDE.md`](CLAUDE.md) | Kopieer naar de root van de doelrepo. Importeert de instructies hierboven en voegt Claude Code-specifieke afspraken toe. |
 
+| [`vscode-mcp.json`](vscode-mcp.json) | Kopieer naar `.vscode/mcp.json` in de doelrepo. Start de Azure DevOps MCP-server `ado` (lokaal, via `npx`) met alleen de domeinen die de `ado-`skills nodig hebben. VS Code vraagt bij de start om de organisatienaam. |
+
 Zo onderhoud je de inhoud op één plek, voor zowel Copilot als Claude Code.
+
+## De Azure DevOps MCP-server
+
+De `ado-`skills hebben de MCP-server `ado` nodig. De naam `ado` moet kloppen, want de skills verwijzen ernaar.
+
+- **VS Code / Copilot:** gebruik `vscode-mcp.json` hierboven. De login loopt via de browser.
+- **Claude Code:** `claude mcp add ado -- npx -y @azure-devops/mcp <organisatie> -d core work-items repositories`
+- **`ado-pr-followup`** leest ook buildresultaten en heeft daarvoor het domein voor pipelines nodig. Voeg het toe aan de `-d`-lijst; controleer de exacte domeinnaam in de README van [microsoft/azure-devops-mcp](https://github.com/microsoft/azure-devops-mcp), want de lijst met domeinen kan veranderen. Zonder dat domein slaat de skill de checks over.
+- Microsoft biedt ook een gehoste (remote) variant aan, waarvoor je niets lokaal installeert. Daar kies je domeinen niet via `-d`, dus controleer in de documentatie van de server of de tools die de skills gebruiken beschikbaar zijn.
+- Kijk dat de toolnamen die de skills noemen (`wit_work_item`, `repo_pull_request_write`, ...) overeenkomen met wat jouw versie van de server aanbiedt.
 
 ## Invullen
 
